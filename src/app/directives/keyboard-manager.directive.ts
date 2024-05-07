@@ -10,34 +10,34 @@ import { KeyboardManagedItemDirective } from './keyboard-managed-item.directive'
   selector: '[appKM]',
 })
 export class KeyboardManagerDirective {
-  constructor() {}
   @ContentChildren(KeyboardManagedItemDirective)
   public items: QueryList<KeyboardManagedItemDirective>;
 
-  ngAfterViewInit(): void {
-    this.items;
-  }
+  ngAfterViewInit(): void {}
 
-  @HostListener('keyup', ['$event'])
+  @HostListener('keydown', ['$event'])
   public manageKeys(event: KeyboardEvent): void {
     switch (event.key) {
       case 'ArrowUp':
         this.moveFocus(ArrowDirection.UP).focus();
-        this.items.toArray()[0];
         console.log('up');
         console.log(this.items);
+        event.preventDefault();
         break;
       case 'ArrowDown':
         this.moveFocus(ArrowDirection.DOWN).focus();
         console.log('down');
+        event.preventDefault();
         break;
       case 'ArrowLeft':
         this.moveFocus(ArrowDirection.LEFT).focus();
         console.log('left');
+        event.preventDefault();
         break;
       case 'ArrowRight':
         this.moveFocus(ArrowDirection.RIGHT).focus();
         console.log('right');
+        event.preventDefault();
         break;
     }
   }
@@ -45,13 +45,16 @@ export class KeyboardManagerDirective {
   public moveFocus(direction: ArrowDirection): KeyboardManagedItemDirective {
     const items = this.items.toArray();
     const currentSelectedIndex = items.findIndex((item) => item.isFocused());
-    const targetElementFocus = items[currentSelectedIndex + direction];
-    if (targetElementFocus) {
-      return targetElementFocus;
+    let targetIndex = currentSelectedIndex + direction;
+
+    if (targetIndex < 0) {
+      targetIndex = items.length - 1;
+    } else if (targetIndex >= items.length) {
+      targetIndex = 0;
     }
-    return direction === ArrowDirection.DOWN
-      ? items[items.length - 1]
-      : items[0];
+
+    const targetElementFocus = items[targetIndex];
+    return targetElementFocus;
   }
 }
 
