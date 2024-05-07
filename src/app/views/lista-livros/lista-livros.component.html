@@ -7,8 +7,13 @@
     </button>
   </div>
   <p>Busque por assunto, autoria, nome...</p>
-  <ul class="container-card" *ngIf="listaLivros?.length > 0; else telaInicial">
+  <ul
+    class="container-card"
+    *ngIf="listaLivros?.length > 0; else telaInicial"
+    appKM
+  >
     <li
+      appKMItem
       *ngFor="let livro of listaLivros; let i = index"
       #livroDaLista
       tabindex="-1"

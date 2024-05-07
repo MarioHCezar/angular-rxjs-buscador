@@ -1,11 +1,10 @@
 import {
   Component,
   ElementRef,
-  HostListener,
   OnDestroy,
   OnInit,
   QueryList,
-  ViewChildren,
+  ViewChildren
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Livro } from 'src/app/models/interface';
@@ -59,37 +58,5 @@ export class ListaLivrosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  @HostListener('window:keydown', ['$event'])
-  handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'ArrowUp') {
-      if (this.itemFocadoIndex > 0) {
-        this.itemFocadoIndex--;
-        this.focarItem(this.itemFocadoIndex);
-      } else if (this.itemFocadoIndex === 0) {
-        const inputElement = document.querySelector('input[type="search"]');
-        if (inputElement) {
-          (inputElement as HTMLElement).focus();
-          this.itemFocadoIndex = -1;
-        }
-      }
-      event.preventDefault();
-    } else if (event.key === 'ArrowDown') {
-      if (this.itemFocadoIndex < this.listaLivros.length - 1) {
-        this.itemFocadoIndex++;
-        this.focarItem(this.itemFocadoIndex);
-      } else if (this.itemFocadoIndex === -1) {
-        this.itemFocadoIndex = 0;
-        this.focarItem(this.itemFocadoIndex);
-      }
-      event.preventDefault();
-    }
-  }
-
-  focarItem(index: number) {
-    const livroItemsArray = this.livroItems.toArray();
-    const itemParaFocar = livroItemsArray[index].nativeElement;
-    itemParaFocar.focus();
   }
 }
