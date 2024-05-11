@@ -1,9 +1,14 @@
 <section class="container">
-  <header>Que livro você procura?</header>
+  <header id="headerLivros">Que livro você procura?</header>
   <div class="busca">
-    <input type="search" [(ngModel)]="campoBusca" (submit)="buscarLivros()" />
+    <input
+      type="search"
+      [(ngModel)]="campoBusca"
+      (submit)="buscarLivros()"
+      aria-labelledby="headerLivros"
+    />
     <button (click)="buscarLivros()">
-      <img src="assets/imagens/icone-busca.png" alt="Lupa de cor roxa" />
+      <img src="assets/imagens/icone-busca.png" alt="Buscar" />
     </button>
   </div>
   <p>Busque por assunto, autoria, nome...</p>
@@ -12,12 +17,7 @@
     *ngIf="listaLivros?.length > 0; else telaInicial"
     appKM
   >
-    <li
-      appKMItem
-      *ngFor="let livro of listaLivros; let i = index"
-      #livroDaLista
-      tabindex="-1"
-    >
+    <li tabindex="-1" appKMItem *ngFor="let livro of listaLivros" #livroDaLista>
       <app-livro [livro]="livro"></app-livro>
     </li>
   </ul>
